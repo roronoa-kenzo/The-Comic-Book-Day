@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ComicScan - Votre bibliothèque de comics",
+  title: "The Comic Book Day - Votre bibliothèque de comics",
   description: "Découvrez et lisez vos comics préférés en ligne",
 };
 

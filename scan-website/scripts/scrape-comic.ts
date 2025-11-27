@@ -21,7 +21,7 @@ Usage:
   
 Options:
   --max-chapters <number>    Limite le nombre de chapitres à scraper
-  --output <path>            Chemin du fichier de sortie (défaut: ./data/comic.json)
+  --output <path>            Chemin du fichier de sortie (défaut: ./data/<comic-id>.json)
   --search <query>           Recherche un comic au lieu de scraper directement
   
 Exemples:
@@ -70,14 +70,12 @@ Exemples:
   const maxChapters = maxChaptersIndex !== -1 ? parseInt(args[maxChaptersIndex + 1]) : undefined;
 
   const outputIndex = args.indexOf("--output");
-  const outputPath =
-    outputIndex !== -1 ? args[outputIndex + 1] : join(process.cwd(), "data", "comic.json");
+  let outputPath = outputIndex !== -1 ? args[outputIndex + 1] : undefined;
 
   console.log(`\n🚀 Début du scraping de: ${comicUrl}`);
   if (maxChapters) {
     console.log(`📚 Limite: ${maxChapters} chapitres`);
   }
-  console.log(`💾 Sortie: ${outputPath}\n`);
 
   try {
     // Scraping de la série complète
@@ -86,6 +84,16 @@ Exemples:
       delayBetweenChapters: 2000,
       delayBetweenPages: 500,
     });
+
+    // Générer un nom de fichier unique basé sur l'ID du comic si non spécifié
+    if (!outputPath) {
+      // Nettoyer l'ID pour qu'il soit un nom de fichier valide
+      const comicId = series.id || "comic";
+      const safeId = comicId.replace(/[^\w\-_\.]/g, "_");
+      outputPath = join(process.cwd(), "data", `${safeId}.json`);
+    }
+
+    console.log(`💾 Sortie: ${outputPath}\n`);
 
     // Création de l'objet de données
     const scrapedData: ScrapedData = {

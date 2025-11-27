@@ -58,12 +58,12 @@ export default function ComicDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen text-white">
       {/* Navigation */}
       <nav className="fixed top-0 z-50 w-full bg-black/95 backdrop-blur-sm">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <Link href="/" className="text-2xl font-bold">
-            ComicScan
+            The Comic Book Day
           </Link>
           <button
             onClick={() => router.back()}
@@ -75,7 +75,7 @@ export default function ComicDetailPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative mt-16 min-h-[60vh] w-full overflow-hidden">
+      <section className="relative mt-16 min-h-[60vh] w-full overflow-hidden bg-black">
         {comic.coverImage && (
           <div
             className="absolute inset-0 bg-cover bg-center"
@@ -88,40 +88,45 @@ export default function ComicDetailPage() {
           </div>
         )}
 
-        <div className="relative z-10 flex h-full items-end pb-12">
+        <div className="relative z-10 flex h-full items-end pb-12 pt-8">
           <div className="mx-auto w-full max-w-7xl px-6">
             <div className="flex flex-col gap-6 md:flex-row md:items-end">
               {comic.coverImage && (
-                <img
-                  src={comic.coverImage}
-                  alt={comic.title}
-                  className="h-64 w-48 rounded-lg object-cover shadow-2xl md:h-80 md:w-56"
-                />
+                <div className="shrink-0">
+                  <img
+                    src={comic.coverImage}
+                    alt={comic.title}
+                    className="h-64 w-48 rounded-lg object-cover shadow-2xl md:h-80 md:w-56"
+                  />
+                </div>
               )}
-              <div className="flex-1">
+              <div className="flex-1 pb-4">
                 <h1 className="mb-4 text-4xl font-bold md:text-6xl">{comic.title}</h1>
                 {comic.description && (
                   <p className="mb-4 max-w-2xl text-lg text-gray-300">{comic.description}</p>
                 )}
-                <div className="flex flex-wrap gap-4 text-sm">
+                <div className="mb-4 flex flex-wrap gap-4 text-sm">
                   {comic.author && (
                     <div>
-                      <span className="text-gray-400">Auteur:</span> {comic.author}
+                      <span className="text-gray-400">Auteur:</span>{" "}
+                      <span className="text-white">{comic.author}</span>
                     </div>
                   )}
                   {comic.publisher && (
                     <div>
-                      <span className="text-gray-400">Éditeur:</span> {comic.publisher}
+                      <span className="text-gray-400">Éditeur:</span>{" "}
+                      <span className="text-white">{comic.publisher}</span>
                     </div>
                   )}
                   {comic.status && (
                     <div>
-                      <span className="text-gray-400">Statut:</span> {comic.status}
+                      <span className="text-gray-400">Statut:</span>{" "}
+                      <span className="text-white">{comic.status}</span>
                     </div>
                   )}
                 </div>
                 {comic.genres && comic.genres.length > 0 && (
-                  <div className="mt-4 flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2">
                     {comic.genres.map((genre) => (
                       <span
                         key={genre}
@@ -139,7 +144,10 @@ export default function ComicDetailPage() {
       </section>
 
       {/* Chapters Section */}
-      <section className="mx-auto max-w-7xl px-6 py-12">
+      <section
+        className="mx-auto max-w-7xl rounded-xl px-6 py-12"
+        style={{ backgroundColor: "lab(2 0 -0.03)" }}
+      >
         <h2 className="mb-6 text-3xl font-bold">
           Chapitres ({comic.totalChapters})
         </h2>

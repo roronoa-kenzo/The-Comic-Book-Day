@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "scrape": "tsx scripts/scrape-comic.ts"
+    "scrape": "tsx scripts/scrape-comic.ts",
+    "scrape:python": "python scraper.py",
+    "postinstall": "pip install -q -r requirements.txt || echo 'Python dependencies installation skipped (pip not found or already installed)'"
   },
   "dependencies": {
     "axios": "^1.13.2",

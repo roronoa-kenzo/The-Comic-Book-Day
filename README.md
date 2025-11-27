@@ -1,112 +1,94 @@
-# ScanWebsite - Comic Reader & Scraper
+# The Comic Book Day
 
-A complete web application for reading comics with a Python scraper for extracting comic data from ReadComicOnline.li.
+Une application web complète pour lire des comics avec des scrapers intégrés pour extraire les données de comics depuis ReadComicOnline.li.
 
-## Project Structure
+## 🚀 Installation
 
-This project consists of two main components:
+**Tout se fait en une seule commande :**
 
-### 1. Next.js Web Application (`scan-website/`)
-
-A modern comic reader built with Next.js, React, and TypeScript.
-
-**Features:**
-- Browse and read comics
-- Chapter navigation
-- Responsive design with Tailwind CSS
-- API routes for comic data
-
-**Quick Start:**
-```bash
-cd scan-website
-npm install
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) to view the app.
-
-See `scan-website/README.md` for more details.
-
-### 2. Python Comic Scraper
-
-A web scraper for extracting comic data from ReadComicOnline.li using Selenium and BeautifulSoup.
-
-**Features:**
-- Scrapes series information (title, description, genres, etc.)
-- Extracts cover images
-- Retrieves all chapters/issues
-- Extracts all pages from each chapter
-- Handles JavaScript with Selenium
-- Filters duplicates and irrelevant images
-- Saves data in JSON format compatible with the web app
-
-**Quick Start:**
-```bash
-# Setup (installs dependencies in a virtual environment)
-./setup_scraper.sh
-
-# Or manually:
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-
-# Run scraper
-python scraper.py "https://readcomiconline.li/Comic/Batman-2025"
-```
-
-See `README_SCRAPER.md` for detailed usage instructions.
-
-## Requirements
-
-### Web Application
-- Node.js 18+
-- npm or yarn
-
-### Scraper
-- Python 3.8+
-- ChromeDriver (for Selenium)
-  - macOS: `brew install chromedriver`
-  - Linux/Windows: Download from https://chromedriver.chromium.org/
-
-## Installation
-
-1. Clone the repository:
-```bash
-git clone <your-repo-url>
-cd ScanWebsite
-```
-
-2. Setup the web application:
 ```bash
 cd scan-website
 npm install
 ```
 
-3. Setup the scraper:
-```bash
-cd ..
-./setup_scraper.sh
-```
+Cette commande installe automatiquement :
+- Toutes les dépendances Node.js (Next.js, React, TypeScript, etc.)
+- Toutes les dépendances Python (Selenium, BeautifulSoup, etc.) via le script `postinstall`
 
-## Usage Workflow
+**C'est tout !** Plus besoin d'environnement virtuel Python ou de configuration supplémentaire.
 
-1. **Scrape comic data:**
-```bash
-python scraper.py "https://readcomiconline.li/Comic/Your-Comic-Name"
-```
+## 📋 Prérequis
 
-2. **Move the generated JSON to the web app:**
-```bash
-cp data/comic.json scan-website/data/
-```
+- **Node.js 18+** (avec npm)
+- **Python 3.x** (pour le scraper Python)
+- **Chrome/Chromium** (pour Puppeteer et Selenium)
 
-3. **Run the web application:**
+## 🎯 Utilisation
+
+### Lancer l'application web
+
 ```bash
 cd scan-website
 npm run dev
 ```
 
-## License
+Ouvrez [http://localhost:3000](http://localhost:3000) dans votre navigateur.
+
+### Scraper un comic
+
+**Option 1 : Scraper TypeScript (recommandé)**
+```bash
+npm run scrape "https://readcomiconline.li/Comic/Batman-2025"
+```
+
+**Option 2 : Scraper Python**
+```bash
+npm run scrape:python "https://readcomiconline.li/Comic/Batman-2025"
+```
+
+**Limiter le nombre de chapitres :**
+```bash
+npm run scrape "https://readcomiconline.li/Comic/Batman-2025" --max-chapters 5
+```
+
+Les comics scrapés sont automatiquement sauvegardés dans `scan-website/data/` avec un nom unique basé sur l'ID du comic (ex: `Batman-2025.json`).
+
+## 📁 Structure du Projet
+
+```
+The-Comic-Book-Day/
+├── scan-website/          # Application Next.js
+│   ├── app/              # Pages et routes API
+│   ├── lib/              # Logique métier
+│   ├── scripts/          # Scripts de scraping
+│   ├── data/             # Comics scrapés (JSON)
+│   └── scraper.py        # Scraper Python
+└── README.md
+```
+
+## ✨ Fonctionnalités
+
+- 📚 **Bibliothèque de comics** : Parcourir et lire vos comics scrapés
+- 🔍 **Navigation par chapitres** : Accès direct aux chapitres
+- 📖 **Lecteur de pages** : Navigation fluide avec clavier (flèches)
+- 🎨 **Design moderne** : Interface responsive avec Tailwind CSS
+- 🤖 **Scraping automatique** : Extraction complète des métadonnées et pages
+- 💾 **Persistance** : Chaque comic est sauvegardé dans son propre fichier JSON
+
+## 🛠️ Scripts Disponibles
+
+- `npm run dev` : Lance le serveur de développement
+- `npm run build` : Build de production
+- `npm run start` : Lance le serveur de production
+- `npm run scrape <url>` : Scrape un comic (TypeScript)
+- `npm run scrape:python <url>` : Scrape un comic (Python)
+
+## 📝 Notes
+
+- Les dépendances Python sont installées automatiquement lors de `npm install`
+- Les comics sont sauvegardés dans `scan-website/data/` avec des noms uniques
+- Le scraper respecte des délais entre les requêtes pour ne pas surcharger le serveur
+
+## 📄 License
 
 MIT
-

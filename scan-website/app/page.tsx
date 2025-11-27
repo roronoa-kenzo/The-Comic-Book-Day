@@ -72,7 +72,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen text-white">
       {/* Navigation */}
       <nav
         className={`fixed top-0 z-50 w-full transition-all duration-300 ${
@@ -81,7 +81,7 @@ export default function Home() {
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <Link href="/" className="text-2xl font-bold">
-            ComicScan
+            The Comic Book Day
           </Link>
           <div className="hidden items-center gap-8 md:flex">
             <Link href="/" className="text-sm font-medium transition-opacity hover:opacity-70">
@@ -91,41 +91,48 @@ export default function Home() {
               Bibliothèque
             </Link>
           </div>
-          <button className="rounded-full bg-white px-6 py-2 text-sm font-semibold text-black transition-opacity hover:opacity-90">
-            Connexion
-          </button>
         </div>
       </nav>
 
       {/* Hero Section */}
       {featuredComic && (
-        <section className="relative h-[80vh] w-full overflow-hidden">
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage: featuredComic.coverImage
-                ? `url(${featuredComic.coverImage})`
-                : "linear-gradient(to bottom, #1a1a1a, #000)",
-            }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
-          </div>
+        <section className="relative w-full overflow-hidden bg-black pt-20" id="hero-section">
+          {/* Dégradé gauche - Cyan/Blue discret */}
+          <div className="pointer-events-none absolute left-0 top-0 h-full w-1/4 bg-linear-to-r from-cyan-500/10 via-transparent to-transparent" />
+          
+          {/* Dégradé droite - Violet/Purple discret */}
+          <div className="pointer-events-none absolute right-0 top-0 h-full w-1/4 bg-linear-to-l from-purple-500/10 via-transparent to-transparent" />
+          
+          <div className="relative mx-auto flex max-w-7xl flex-col items-center gap-8 px-6 py-12 md:flex-row md:items-start md:gap-12">
+            {/* Image du comic à sa taille normale */}
+            {featuredComic.coverImage && (
+              <div className="shrink-0">
+                <img
+                  src={featuredComic.coverImage}
+                  alt={featuredComic.title}
+                  className="h-auto w-[200px] rounded-lg object-cover shadow-2xl md:w-[280px]"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = "none";
+                  }}
+                />
+              </div>
+            )}
 
-          <div className="relative z-10 flex h-full items-center">
-            <div className="mx-auto w-full max-w-7xl px-6 md:w-2/3">
-              <h1 className="mb-4 text-5xl font-bold leading-tight md:text-7xl">
+            {/* Contenu texte */}
+            <div className="flex-1">
+              <h1 className="mb-4 text-4xl font-bold leading-tight text-white md:text-5xl lg:text-6xl">
                 {featuredComic.title}
               </h1>
               {featuredComic.description && (
-                <p className="mb-8 max-w-md text-lg text-gray-300 md:text-xl">
+                <p className="mb-8 text-base leading-relaxed text-gray-300 md:text-lg">
                   {featuredComic.description}
                 </p>
               )}
-              <div className="flex gap-4">
+              <div className="flex flex-wrap gap-4">
                 <Link
                   href={`/comic/${featuredComic.id}`}
-                  className="flex items-center gap-2 rounded-full bg-white px-8 py-3 text-base font-semibold text-black transition-all hover:scale-105 hover:bg-gray-200"
+                  className="flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-black transition-all hover:scale-105 hover:bg-gray-200 md:px-8 md:py-3 md:text-base"
                 >
                   <svg
                     className="h-5 w-5"
@@ -143,7 +150,7 @@ export default function Home() {
                 </Link>
                 <Link
                   href={`/comic/${featuredComic.id}`}
-                  className="flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-8 py-3 text-base font-semibold backdrop-blur-sm transition-all hover:border-white/50 hover:bg-white/20"
+                  className="flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-6 py-3 text-sm font-semibold backdrop-blur-sm transition-all hover:border-white/50 hover:bg-white/20 md:px-8 md:py-3 md:text-base"
                 >
                   <svg
                     className="h-5 w-5"
@@ -168,47 +175,55 @@ export default function Home() {
       )}
 
       {loading && (
-        <section className="relative h-[80vh] w-full overflow-hidden">
-          <div className="flex h-full items-center justify-center">
+        <section className="relative w-full overflow-hidden bg-black pt-20" id="loading-section">
+          <div className="flex min-h-[400px] items-center justify-center">
             <div className="text-xl text-gray-400">Chargement des comics...</div>
           </div>
         </section>
       )}
 
       {/* Content Rows */}
-      <section className={`relative z-10 space-y-8 pb-16 ${featuredComic ? "-mt-20" : "mt-20"}`}>
+      <section 
+        className="relative z-10 space-y-12 pb-16 pt-8" 
+        id="comics-section"
+        style={{ backgroundColor: 'lab(2 0 -0.03)' }}
+      >
         {categories.length > 0 ? (
           categories.map((category) => (
             <div key={category.name} className="px-6">
-              <h2 className="mb-4 text-2xl font-semibold">{category.name}</h2>
+              <h2 className="mb-6 text-xl font-semibold text-gray-200">{category.name}</h2>
               <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
                 {category.comics.map((comic) => (
                   <Link
                     key={comic.id}
                     href={`/comic/${comic.id}`}
-                    className="group flex-shrink-0 cursor-pointer transition-transform hover:scale-105"
+                    className="group shrink-0 cursor-pointer transition-all hover:scale-[1.03]"
                   >
-                    <div className="relative h-[450px] w-[300px] overflow-hidden rounded-lg">
+                    <div className="relative w-[180px] overflow-hidden rounded-lg">
                       {comic.coverImage ? (
-                        <img
-                          src={comic.coverImage}
-                          alt={comic.title}
-                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='450'%3E%3Crect fill='%23333' width='300' height='450'/%3E%3Ctext x='50%25' y='50%25' fill='white' text-anchor='middle' dy='.3em' font-size='16'%3EImage non disponible%3C/text%3E%3C/svg%3E";
-                          }}
-                        />
+                        <div className="relative aspect-2/3 overflow-hidden rounded-lg bg-gray-900">
+                          <img
+                            src={comic.coverImage}
+                            alt={comic.title}
+                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='270'%3E%3Crect fill='%23333' width='180' height='270'/%3E%3Ctext x='50%25' y='50%25' fill='white' text-anchor='middle' dy='.3em' font-size='12'%3EImage non disponible%3C/text%3E%3C/svg%3E";
+                            }}
+                          />
+                          <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+                        </div>
                       ) : (
-                        <div className="flex h-full w-full items-center justify-center bg-gray-800">
-                          <span className="text-gray-500">Pas d&apos;image</span>
+                        <div className="flex aspect-2/3 items-center justify-center rounded-lg bg-gray-800">
+                          <span className="text-xs text-gray-500">Pas d&apos;image</span>
                         </div>
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-                      <div className="absolute bottom-0 left-0 right-0 p-4 opacity-0 transition-opacity group-hover:opacity-100">
-                        <h3 className="mb-1 text-lg font-semibold">{comic.title}</h3>
+                      <div className="mt-2">
+                        <h3 className="line-clamp-2 text-base font-medium leading-tight text-white group-hover:text-gray-300">
+                          {comic.title}
+                        </h3>
                         {comic.totalChapters > 0 && (
-                          <p className="text-sm text-gray-300">
+                          <p className="mt-1 text-sm text-gray-400">
                             {comic.totalChapters} chapitre{comic.totalChapters > 1 ? "s" : ""}
                           </p>
                         )}

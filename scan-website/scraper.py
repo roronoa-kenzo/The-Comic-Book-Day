@@ -647,7 +647,7 @@ Usage:
   
 Options:
   --max-chapters <number>    Limite le nombre de chapitres à scraper
-  --output <path>            Chemin du fichier de sortie (défaut: ./data/comic.json)
+  --output <path>            Chemin du fichier de sortie (défaut: ./data/<comic-id>.json)
   
 Exemples:
   python scraper.py "https://readcomiconline.li/Comic/Batman-2025"
@@ -658,7 +658,7 @@ Exemples:
     
     comic_url = sys.argv[1]
     max_chapters = None
-    output_path = "./data/comic.json"
+    output_path = None
     
     # Parser les arguments
     i = 2
@@ -675,10 +675,19 @@ Exemples:
     print(f"\n🚀 Début du scraping de: {comic_url}")
     if max_chapters:
         print(f"📚 Limite: {max_chapters} chapitres")
-    print(f"💾 Sortie: {output_path}\n")
     
     try:
         series = scrape_full_series(comic_url, max_chapters=max_chapters)
+        
+        # Générer un nom de fichier unique basé sur l'ID du comic si non spécifié
+        if not output_path:
+            # Nettoyer l'ID pour qu'il soit un nom de fichier valide
+            comic_id = series.get('id', 'comic')
+            # Remplacer les caractères invalides
+            safe_id = re.sub(r'[^\w\-_\.]', '_', comic_id)
+            output_path = f"./data/{safe_id}.json"
+        
+        print(f"💾 Sortie: {output_path}\n")
         
         scraped_data = {
             'series': series,

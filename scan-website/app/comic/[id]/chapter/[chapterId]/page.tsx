@@ -87,11 +87,11 @@ export default function ChapterReaderPage() {
       {/* Navigation Bar */}
       <nav className="fixed top-0 z-50 w-full bg-black/95 backdrop-blur-sm">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <Link href={`/comic/${comic.id}`} className="text-xl font-bold">
+          <Link href={`/comic/${comic.id}`} className="text-xl font-bold truncate max-w-md">
             {comic.title}
           </Link>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-400">
+            <span className="hidden text-sm text-gray-400 sm:inline">
               Page {currentPage + 1} / {chapter.pages.length}
             </span>
             <button
@@ -107,12 +107,15 @@ export default function ChapterReaderPage() {
       {/* Reader */}
       <div className="flex min-h-screen flex-col pt-16">
         {/* Chapter Info */}
-        <div className="mx-auto w-full max-w-4xl px-6 py-4 text-center">
+        <div className="mx-auto w-full max-w-4xl border-b border-white/10 px-6 py-4 text-center">
           <h2 className="text-xl font-semibold">{chapter.title}</h2>
+          <p className="mt-1 text-sm text-gray-400">
+            Page {currentPage + 1} / {chapter.pages.length}
+          </p>
         </div>
 
         {/* Page Display */}
-        <div className="flex flex-1 items-center justify-center">
+        <div className="flex flex-1 items-center justify-center bg-black py-8">
           {currentPageData ? (
             <div className="relative w-full max-w-5xl">
               <img
@@ -178,40 +181,66 @@ export default function ChapterReaderPage() {
         </div>
 
         {/* Bottom Navigation */}
-        <div className="mx-auto w-full max-w-4xl border-t border-white/10 px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              {prevChapter && (
+        <div className="mx-auto w-full max-w-4xl border-t border-white/10 bg-black px-6 py-6">
+          <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
+            <div className="order-2 sm:order-1">
+              {prevChapter ? (
                 <Link
                   href={`/comic/${comic.id}/chapter/${prevChapter.id}`}
-                  className="rounded-full border border-white/30 bg-white/10 px-6 py-2 text-sm font-semibold backdrop-blur-sm transition-all hover:border-white/50 hover:bg-white/20"
+                  className="rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm font-semibold backdrop-blur-sm transition-all hover:border-white/50 hover:bg-white/20 sm:px-6"
                 >
-                  ← Chapitre précédent
+                  ← Précédent
                 </Link>
+              ) : (
+                <div className="px-4 py-2 sm:px-6" />
               )}
             </div>
 
-            <div className="flex gap-2">
-              {chapter.pages.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentPage(index)}
-                  className={`h-2 w-2 rounded-full transition-all ${
-                    index === currentPage ? "bg-white" : "bg-white/30"
-                  }`}
-                  aria-label={`Aller à la page ${index + 1}`}
-                />
-              ))}
+            <div className="order-1 flex flex-wrap justify-center gap-2 sm:order-2">
+              {chapter.pages.length <= 50 ? (
+                chapter.pages.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentPage(index)}
+                    className={`h-2 w-2 rounded-full transition-all ${
+                      index === currentPage ? "bg-white" : "bg-white/30 hover:bg-white/50"
+                    }`}
+                    aria-label={`Aller à la page ${index + 1}`}
+                  />
+                ))
+              ) : (
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setCurrentPage(Math.max(0, currentPage - 10))}
+                    className="rounded-md px-2 py-1 text-xs text-gray-400 hover:text-white"
+                  >
+                    -10
+                  </button>
+                  <span className="text-sm text-gray-400">
+                    {currentPage + 1} / {chapter.pages.length}
+                  </span>
+                  <button
+                    onClick={() =>
+                      setCurrentPage(Math.min(chapter.pages.length - 1, currentPage + 10))
+                    }
+                    className="rounded-md px-2 py-1 text-xs text-gray-400 hover:text-white"
+                  >
+                    +10
+                  </button>
+                </div>
+              )}
             </div>
 
-            <div>
-              {nextChapter && (
+            <div className="order-3">
+              {nextChapter ? (
                 <Link
                   href={`/comic/${comic.id}/chapter/${nextChapter.id}`}
-                  className="rounded-full border border-white/30 bg-white/10 px-6 py-2 text-sm font-semibold backdrop-blur-sm transition-all hover:border-white/50 hover:bg-white/20"
+                  className="rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm font-semibold backdrop-blur-sm transition-all hover:border-white/50 hover:bg-white/20 sm:px-6"
                 >
-                  Chapitre suivant →
+                  Suivant →
                 </Link>
+              ) : (
+                <div className="px-4 py-2 sm:px-6" />
               )}
             </div>
           </div>
