@@ -1,7 +1,7 @@
 {
-  "buildCommand": "cd scan-website && npm install && npm run build",
-  "outputDirectory": "scan-website/.next",
-  "installCommand": "cd scan-website && npm install",
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "installCommand": "npm install",
   "framework": "nextjs"
 }
 
