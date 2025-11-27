@@ -239,7 +239,6 @@ export async function scrapeChapterPages(
 
     // Extraire les pages depuis le DOM
     // Utiliser une fonction sans types pour éviter les problèmes de compilation TypeScript
-    // @ts-expect-error - Code exécuté dans le navigateur, types non nécessaires
     const pages = await page.evaluate(function() {
       'use strict';
       const result = [];
