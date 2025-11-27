@@ -239,13 +239,14 @@ export async function scrapeChapterPages(
 
     // Extraire les pages depuis le DOM
     // Utiliser une fonction sans types pour éviter les problèmes de compilation TypeScript
+    // @ts-expect-error - Code exécuté dans le navigateur, types non nécessaires
     const pages = await page.evaluate(function() {
       'use strict';
       const result = [];
       const seenUrls = new Set();
 
       // Fonction pour normaliser l'URL
-      function normalizeUrl(url) {
+      function normalizeUrl(url: any) {
         try {
           const urlObj = new URL(url);
           const pathname = urlObj.pathname;
@@ -264,7 +265,7 @@ export async function scrapeChapterPages(
       }
 
       // Fonction pour vérifier si c'est une vraie page de comic
-      function isValidComicPage(url) {
+      function isValidComicPage(url: any) {
         const lowerUrl = url.toLowerCase();
         const excludePatterns = [
           "logo",

@@ -8,7 +8,7 @@ import type { ScrapedData } from "../lib/types";
 /**
  * Script CLI pour scraper un comic
  * Usage: npm run scrape <comic-url> [options]
- * Exemple: npm run scrape "https://readcomiconline.li/Comic/Spider-Man"
+ * Exemple: npm run scrape "https://readcomiconline.li/Comic/Batman-2025"
  */
 
 async function main() {
@@ -25,9 +25,9 @@ Options:
   --search <query>           Recherche un comic au lieu de scraper directement
   
 Exemples:
-  npm run scrape "https://readcomiconline.li/Comic/Spider-Man"
-  npm run scrape "https://readcomiconline.li/Comic/Spider-Man" --max-chapters 5
-  npm run scrape --search "Batman"
+  npm run scrape "https://readcomiconline.li/Comic/Batman-2025"
+  npm run scrape "https://readcomiconline.li/Comic/Batman-2025" --max-chapters 5
+  npm run scrape --search "Batman-2025"
     `);
     process.exit(1);
   }
@@ -87,7 +87,6 @@ Exemples:
 
     // Générer un nom de fichier unique basé sur l'ID du comic si non spécifié
     if (!outputPath) {
-      // Nettoyer l'ID pour qu'il soit un nom de fichier valide
       const comicId = series.id || "comic";
       const safeId = comicId.replace(/[^\w\-_\.]/g, "_");
       outputPath = join(process.cwd(), "data", `${safeId}.json`);
@@ -110,14 +109,14 @@ Exemples:
 
     writeFileSync(outputPath, JSON.stringify(scrapedData, null, 2), "utf-8");
 
-    console.log(`\n✅ Scraping terminé avec succès!`);
-    console.log(`📊 Statistiques:`);
+    console.log(`\n Scraping terminé avec succès!`);
+    console.log(` Statistiques:`);
     console.log(`   - Titre: ${series.title}`);
     console.log(`   - Chapitres: ${series.totalChapters}`);
     console.log(`   - Pages totales: ${series.chapters.reduce((sum, ch) => sum + ch.pageCount, 0)}`);
     console.log(`   - Fichier sauvegardé: ${outputPath}\n`);
   } catch (error) {
-    console.error("\n❌ Erreur lors du scraping:", error);
+    console.error("\n RIP BOZO !! Erreur lors du scraping:", error);
     process.exit(1);
   }
 }
