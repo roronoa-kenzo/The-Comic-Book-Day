@@ -65,6 +65,7 @@ next-env.d.ts
 # Testing
 /coverage
 
-# Scraped data
+# Scraped data - allow JSON files for comics
 scan-website/data/*
 !scan-website/data/.gitkeep
+!scan-website/data/*.json
